@@ -138,6 +138,8 @@ beken_irda:
 - Hardware mode is NEC-only and requires P26. Timer mode accepts any internal input pin but is a sampled
   capture, not a precision edge peripheral.
 - Only BK7231T has been runtime-validated. BK7231N, BK7251/7252 and BK7238 are compile-tested only.
+- On BK7238 the `remote_transmitter` envelope and timer mode both use `BKTIMER1`, so the two cannot be
+  combined; such a configuration is rejected. Hardware mode does not use the timer and is unaffected.
 - BK7252N/BK7253 use a different IRDA block and are rejected for hardware mode; use timer mode instead.
 - The BK7231T/N bit-banged IR transmitter holds an interrupt lock for a whole frame, so simultaneous IR
   transmit and receive is not possible.
