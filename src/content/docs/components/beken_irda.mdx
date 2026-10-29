@@ -47,9 +47,7 @@ beken_irda:
 - **pin** (*Optional*, [Pin](/guides/configuration-types#pin)): The input pin to receive the IR signal on.
   Defaults to `P26`. Hardware mode requires P26; timer mode accepts any internal input pin.
 - **mode** (*Optional*, enum): The receiver frontend. One of `timer` or `hardware`. Defaults to `timer`.
-- **timer_channel** (*Optional*, int): The BK72xx timer channel to sample with, `0` to `2`. Defaults to
-  `1`. Channel `0` is the RTOS tick and channel `2` is the SDK calibration timer, so only use them if you
-  know they are free. Timer mode only.
+  The timer-only options below are rejected in hardware mode.
 - **sample_period** (*Optional*, [Time](/guides/configuration-types#time)): How often the pin is sampled, in
   range `50us` to `2000us`. Defaults to `100us`. Timer mode only.
 - **tolerance** (*Optional*, int, [Time](/guides/configuration-types#time) or mapping): The percentage or
@@ -60,8 +58,9 @@ beken_irda:
   - **value** (**Required**, int or [Time](/guides/configuration-types#time)): The percentage or time
     value, in range `0` to `100%` or `0` to `4294967295us`.
 
-- **filter** (*Optional*, [Time](/guides/configuration-types#time)): Pulses shorter than this are merged
-  into the next interval. Defaults to `50us`. Timer mode only.
+- **filter** (*Optional*, [Time](/guides/configuration-types#time)): Pulses shorter than this are dropped
+  and folded into the surrounding signal, so the decoded timings keep alternating between marks and
+  spaces. Defaults to `50us`. Timer mode only.
 - **idle** (*Optional*, [Time](/guides/configuration-types#time)): A gap of at least this length ends a
   frame. Defaults to `10ms`. Timer mode only.
 - **buffer_size** (*Optional*, int): The number of signed durations the timer capture buffer can hold,
@@ -69,8 +68,6 @@ beken_irda:
 - **dump** (*Optional*, list): Decode and dump these remote codes in the logs (at log.level=DEBUG). Set
   to `all` to dump all available codecs. See
   [remote receiver](/components/remote_receiver#configuration-variables) for the list of decoders.
-- **debug** (*Optional*, boolean): Enable periodic heartbeat and counter logs, and hardware register
-  dumps. Defaults to `false`.
 - **id** (*Optional*, [ID](/guides/configuration-types#id)): Manually specify the ID used for code
   generation.
 
