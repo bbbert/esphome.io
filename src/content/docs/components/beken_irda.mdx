@@ -61,7 +61,8 @@ beken_irda:
 
 - **filter** (*Optional*, [Time](/guides/configuration-types#time)): Pulses shorter than this are dropped
   and folded into the surrounding signal, so the decoded timings keep alternating between marks and
-  spaces. Defaults to `50us`. Timer mode only.
+  spaces. Defaults to 1.5 x `sample_period` (`150us` at the default `100us`), which is longer than one
+  sampling period and so removes single-sample glitches. Timer mode only.
 - **idle** (*Optional*, [Time](/guides/configuration-types#time)): A gap of at least this length ends a
   frame. Defaults to `10ms`. Timer mode only.
 - **buffer_size** (*Optional*, int): The number of signed durations the timer capture buffer can hold,
@@ -142,8 +143,9 @@ beken_irda:
   loop period, about 16 ms), so a frame that starts in that window is dropped.
 - Only BK7231T has been runtime-validated. BK7231N, BK7251/7252 and BK7238 are compile-tested only.
 - On BK7238 the `remote_transmitter` envelope and timer mode both use `BKTIMER1`, so the two cannot be
-  combined; such a configuration is rejected. Hardware mode does not use the timer and is unaffected.
-- BK7252N/BK7253 use a different IRDA block and are rejected for hardware mode; use timer mode instead.
+  combined; such a configuration is rejected.
+- The BK7238 has no IRDA block at all, and the BK7252N/BK7253 have a different IRDA block, so hardware
+  mode is rejected on those parts; use timer mode instead.
 - The BK7231T/N bit-banged IR transmitter holds an interrupt lock for a whole frame, so simultaneous IR
   transmit and receive is not possible.
 
