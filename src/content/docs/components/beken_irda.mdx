@@ -45,7 +45,8 @@ beken_irda:
 ## Configuration variables
 
 - **pin** (*Optional*, [Pin](/guides/configuration-types#pin)): The input pin to receive the IR signal on.
-  Defaults to `P26`. Hardware mode requires P26; timer mode accepts any internal input pin.
+  Defaults to `P26`. Hardware mode requires P26; timer mode accepts any internal input pin. The pin must
+  not be inverted; both frontends read the receiver output active-low.
 - **mode** (*Optional*, enum): The receiver frontend. One of `timer` or `hardware`. Defaults to `timer`.
   The timer-only options below are rejected in hardware mode.
 - **sample_period** (*Optional*, [Time](/guides/configuration-types#time)): How often the pin is sampled, in
@@ -137,6 +138,8 @@ beken_irda:
 
 - Hardware mode is NEC-only and requires P26. Timer mode accepts any internal input pin but is a sampled
   capture, not a precision edge peripheral.
+- In timer mode the sampling interrupt parks after a complete frame until the main loop reads it (up to one
+  loop period, about 16 ms), so a frame that starts in that window is dropped.
 - Only BK7231T has been runtime-validated. BK7231N, BK7251/7252 and BK7238 are compile-tested only.
 - On BK7238 the `remote_transmitter` envelope and timer mode both use `BKTIMER1`, so the two cannot be
   combined; such a configuration is rejected. Hardware mode does not use the timer and is unaffected.
