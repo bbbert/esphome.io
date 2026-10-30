@@ -50,7 +50,7 @@ beken_irda:
 - **mode** (*Optional*, enum): The receiver frontend. One of `timer` or `hardware`. Defaults to `timer`.
   The timer-only options below are rejected in hardware mode.
 - **sample_period** (*Optional*, [Time](/guides/configuration-types#time)): How often the pin is sampled, in
-  range `50us` to `2000us`. Defaults to `100us`. Timer mode only.
+  range `50us` to `1000us`. Defaults to `100us`. Timer mode only.
 - **tolerance** (*Optional*, int, [Time](/guides/configuration-types#time) or mapping): The percentage or
   time that the decoded signal lengths can deviate. Defaults to `30%`, which covers the `100us` timing
   quantization for NEC.
@@ -62,9 +62,9 @@ beken_irda:
 - **filter** (*Optional*, [Time](/guides/configuration-types#time)): Pulses shorter than this are dropped
   and folded into the surrounding signal, so the decoded timings keep alternating between marks and
   spaces. Defaults to 1.5 x `sample_period` (`150us` at the default `100us`), which is longer than one
-  sampling period and so removes single-sample glitches. Timer mode only.
+  sampling period and so removes single-sample glitches. Maximum `1s`. Timer mode only.
 - **idle** (*Optional*, [Time](/guides/configuration-types#time)): A gap of at least this length ends a
-  frame. Defaults to `10ms`. Timer mode only.
+  frame. Defaults to `10ms`, maximum `1s`. Timer mode only.
 - **buffer_size** (*Optional*, int): The number of signed durations the timer capture buffer can hold,
   in range `64` to `8192`. Defaults to `512`; a NEC frame is about 67 durations. Timer mode only.
 - **dump** (*Optional*, list): Decode and dump these remote codes in the logs (at log.level=DEBUG). Set
